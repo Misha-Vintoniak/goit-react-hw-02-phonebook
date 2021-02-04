@@ -1,7 +1,48 @@
 import { Component } from 'react';
 import Form from './Form/Form';
 import Contact from './Contacts/Contacts';
-import ContactsItem from './ContactsItem/ContactsItem';
+// import ContactsItem from './ContactsItem/ContactsItem';
+import shortid from 'shortid';
+
+class App extends Component {
+  state = {
+    name: '',
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ],
+    filter: '',
+  };
+  formSubmitHandler = ({ name, number, licence }) => {
+    const contact = {
+      id: shortid.generate(),
+      name,
+      number,
+      licence,
+    };
+    this.setState(prev => {
+      return [...prev.contacts, contact];
+    });
+  };
+  onRemove = () => {
+    this.contact.remove();
+  };
+  render() {
+    const { contacts } = this.state;
+    return (
+      <>
+        <Form onSubmit={this.formSubmitHandler}></Form>
+        <div>
+          <Contact contacts={contacts}></Contact>
+        </div>
+      </>
+    );
+  }
+}
+
+export default App;
 
 // import shortid from 'shortid';
 
@@ -120,28 +161,3 @@ import ContactsItem from './ContactsItem/ContactsItem';
 //     );
 //   }
 // }
-class App extends Component {
-  state = {
-    name: '',
-    contacts: [],
-    filter: '',
-  };
-  formSubmitHandler = data => {
-    console.log(data);
-  };
-  render() {
-    return (
-      <>
-        <Form onSubmit={this.formSubmitHandler}></Form>
-        <div>
-          <Contact></Contact>
-        </div>
-        <div>
-          <ContactsItem></ContactsItem>
-        </div>
-      </>
-    );
-  }
-}
-
-export default App;

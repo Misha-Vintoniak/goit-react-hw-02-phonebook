@@ -4,15 +4,10 @@ import shortid from 'shortid';
 class Form extends Component {
   state = {
     name: '',
-
-    filter: '',
+    number: '',
     licence: false,
   };
-  todos = {
-    id: '',
-    text: '',
-    completed: false,
-  };
+
   nameInputId = shortid.generate();
   numberInputId = shortid.generate();
 
@@ -25,14 +20,12 @@ class Form extends Component {
   };
   onSubmit = e => {
     e.preventDefault();
-    this.setState.name = e.currentTarget.value;
-    this.setState.contacts = e.currentTarget.value;
-
+    console.log(this.state);
     this.props.onSubmit(this.state);
     this.reset();
   };
   reset = () => {
-    this.setState({ name: '', contacts: '', licence: false });
+    this.setState({ name: '', number: '', licence: false });
   };
 
   render() {
@@ -55,10 +48,10 @@ class Form extends Component {
             Number
             <input
               type="tel"
-              name="contacts"
+              name="number"
               placeholder="Enter phone"
               onChange={this.onChange}
-              value={this.state.contacts}
+              value={this.state.number}
               id={this.numberInputId}
             />
           </label>
