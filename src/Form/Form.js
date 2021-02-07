@@ -5,7 +5,6 @@ class Form extends Component {
   state = {
     name: '',
     number: '',
-    licence: false,
   };
 
   nameInputId = shortid.generate();
@@ -15,9 +14,7 @@ class Form extends Component {
     const { name, value } = e.currentTarget;
     this.setState({ [name]: value });
   };
-  onChekedLicence = e => {
-    this.setState({ licence: e.currentTarget.checked });
-  };
+
   onSubmit = e => {
     e.preventDefault();
     console.log(this.state);
@@ -25,10 +22,11 @@ class Form extends Component {
     this.reset();
   };
   reset = () => {
-    this.setState({ name: '', number: '', licence: false });
+    this.setState({ name: '', number: '' });
   };
 
   render() {
+    const { name, number } = this.state;
     return (
       <form onSubmit={this.onSubmit}>
         <div>Phonebook</div>
@@ -39,7 +37,7 @@ class Form extends Component {
               type="text"
               name="name"
               placeholder="Enter name"
-              value={this.state.name}
+              value={name}
               onChange={this.onChange}
               id={this.nameInputId}
             />
@@ -51,20 +49,11 @@ class Form extends Component {
               name="number"
               placeholder="Enter phone"
               onChange={this.onChange}
-              value={this.state.number}
+              value={number}
               id={this.numberInputId}
             />
           </label>
-          <label htmlFor="">
-            <input
-              type="checkbox"
-              name="licence"
-              checked={this.state.licence}
-              onChange={this.onChekedLicence}
-            />
-            agree
-          </label>
-          <button type="submit" disabled={!this.state.licence}>
+          <button type="submit" disabled={name === '' && number === ''}>
             Add contact
           </button>
 

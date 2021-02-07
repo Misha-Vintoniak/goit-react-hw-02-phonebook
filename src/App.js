@@ -15,27 +15,31 @@ class App extends Component {
     ],
     filter: '',
   };
-  formSubmitHandler = ({ name, number, licence }) => {
+
+  addContact = ({ name, number }) => {
     const contact = {
       id: shortid.generate(),
       name,
       number,
-      licence,
     };
+
     this.setState(prev => {
       return [...prev.contacts, contact];
     });
   };
-  onRemove = () => {
-    this.contact.remove();
+  onRemove = id => {
+    this.setState(contacts => contacts.id !== id);
   };
   render() {
     const { contacts } = this.state;
     return (
       <>
-        <Form onSubmit={this.formSubmitHandler}></Form>
+        <Form onSubmit={this.addContact}></Form>
         <div>
-          <Contact contacts={contacts}></Contact>
+          <Contact
+            renderContacts={contacts}
+            onDeleteContact={this.onRemove}
+          ></Contact>
         </div>
       </>
     );

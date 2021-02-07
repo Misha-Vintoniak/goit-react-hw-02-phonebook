@@ -1,17 +1,17 @@
 // import { number } from 'prop-types';
 
-const Contacts = ({ contacts, onRemove }) => {
+const Contacts = ({ renderContacts, onDeleteContact }) => {
   return (
     <div>
       <p> Contacts</p>
       <ul>
-        {contacts.map(({ name, number, id }) => {
+        {renderContacts.map(({ name, number, id }) => {
           return (
             <li key={id}>
               <span>
-                {name}: {number}
+                {name} : {number}
               </span>
-              <button onClick={() => onRemove(id)}>Delete</button>
+              <button onClick={() => onDeleteContact(id)}>Delete</button>
             </li>
           );
         })}
