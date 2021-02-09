@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import Form from './Form/Form';
 import Contact from './Contacts/Contacts';
-// import ContactsItem from './ContactsItem/ContactsItem';
+import Filter from './Filter/Filter';
 import shortid from 'shortid';
 
 class App extends Component {
@@ -13,7 +13,7 @@ class App extends Component {
       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
-    filter: '',
+    filter: ' ',
   };
 
   addContact = ({ name, number }) => {
@@ -23,15 +23,19 @@ class App extends Component {
       number,
     };
 
-    this.setState(prev => {
-      return [...prev.contacts, contact];
-    });
+    this.setState(prev => ({
+      contacts: [...prev.contacts, contact],
+    }));
   };
-  onRemove = id => {
-    this.setState(contacts => contacts.id !== id);
+  onRemove = e => {
+    // this.setState(id);
+    console.log(e.prev.state);
+  };
+  changeFilter = evt => {
+    this.setState({ filter: evt.currentTarget.value });
   };
   render() {
-    const { contacts } = this.state;
+    const { contacts, filter } = this.state;
     return (
       <>
         <Form onSubmit={this.addContact}></Form>
@@ -40,6 +44,7 @@ class App extends Component {
             renderContacts={contacts}
             onDeleteContact={this.onRemove}
           ></Contact>
+          <Filter value={filter} onChange={this.changeFilter}></Filter>
         </div>
       </>
     );
