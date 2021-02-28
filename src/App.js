@@ -1,8 +1,7 @@
 import { Component } from 'react';
 import Form from './Form/Form';
-import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
-
+import Filter from './Filter/Filter';
 class App extends Component {
   state = {
     name: '',
@@ -15,21 +14,26 @@ class App extends Component {
     filter: ' ',
   };
 
-  handleAddContact = ({ contacts }) => {
-    this.setState(prev => ({
-      contacts: [...prev.contacts, contacts],
+  handleAddContact = ({ name, number }) => {
+    const contact = { name, number };
+    const { contacts } = this.state;
+
+    this.setState(({ contacts }) => ({
+      contacts: [contact, ...contacts],
     }));
   };
 
   handldeUnickName = name => {
     const { contacts } = this.state;
-    const isExistContact = !!contacts.find(contacts => contacts.name === name);
+    const isExistContact = !!contacts.find(contact => contact.name === name);
     isExistContact && alert('Contact is already exist');
     return !isExistContact;
   };
+
   handleChangeFilter = filter => {
     this.setState({ filter });
   };
+
   getVisibleContacts = () => {
     const { contacts, filter } = this.state;
     return contacts.filter(contact =>
@@ -54,6 +58,7 @@ class App extends Component {
           onCheckUnick={this.handldeUnickName}
         />
 
+        <h2>Find contacts</h2>
         <Filter filter={filter} onChange={this.handleChangeFilter} />
 
         <h2> Contacts</h2>
@@ -68,120 +73,120 @@ class App extends Component {
 
 export default App;
 
-// import shortid from 'shortid';
+// // import shortid from 'shortid';
 
-// class App extends Component {
-//   state = {
-//     ...INITIAL_STATE,
-//   };
-//   loginInputId = shortid.generate();
+// // class App extends Component {
+// //   state = {
+// //     ...INITIAL_STATE,
+// //   };
+// //   loginInputId = shortid.generate();
 
-//   handleChange = ({ target }) => {
-//     const { name, value, type, checked } = target;
-//     this.setState({ [name]: type === 'checkbox' ? checked : value });
-//   };
+// //   handleChange = ({ target }) => {
+// //     const { name, value, type, checked } = target;
+// //     this.setState({ [name]: type === 'checkbox' ? checked : value });
+// //   };
 
-//   handleSubmit = e => {
-//     e.preventDefault();
+// //   handleSubmit = e => {
+// //     e.preventDefault();
 
-//     // this.props.onSubmit(this.state.login);
-//     // this.reset();
-//   };
+// //     // this.props.onSubmit(this.state.login);
+// //     // this.reset();
+// //   };
 
-//   reset = () => {
-//     INITIAL_STATE();
-//   };
+// //   reset = () => {
+// //     INITIAL_STATE();
+// //   };
 
-//   render() {
-//     const { login, email, password, agreed, gender, age } = this.state;
+// //   render() {
+// //     const { login, email, password, agreed, gender, age } = this.state;
 
-//     return (
-//       <form onSubmit={this.handleSubmit}>
-//         <label>
-//           Name
-//           <input
-//             type="text"
-//             placeholder="Enter login"
-//             name="login"
-//             value={login}
-//             onChange={this.handleChange}
-//             // id={this.loginInputId}
-//           />
-//         </label>
-//         <label>
-//           Email
-//           <input
-//             type="email"
-//             placeholder="Enter email"
-//             name="email"
-//             value={email}
-//             onChange={this.handleChange}
-//             // id={this.loginInputId}
-//           />
-//         </label>
-//         <label>
-//           Password
-//           <input
-//             type="password"
-//             placeholder="Enter password"
-//             name="password"
-//             value={password}
-//             onChange={this.handleChange}
-//             // id={this.loginInputId}
-//           />
-//         </label>
+// //     return (
+// //       <form onSubmit={this.handleSubmit}>
+// //         <label>
+// //           Name
+// //           <input
+// //             type="text"
+// //             placeholder="Enter login"
+// //             name="login"
+// //             value={login}
+// //             onChange={this.handleChange}
+// //             // id={this.loginInputId}
+// //           />
+// //         </label>
+// //         <label>
+// //           Email
+// //           <input
+// //             type="email"
+// //             placeholder="Enter email"
+// //             name="email"
+// //             value={email}
+// //             onChange={this.handleChange}
+// //             // id={this.loginInputId}
+// //           />
+// //         </label>
+// //         <label>
+// //           Password
+// //           <input
+// //             type="password"
+// //             placeholder="Enter password"
+// //             name="password"
+// //             value={password}
+// //             onChange={this.handleChange}
+// //             // id={this.loginInputId}
+// //           />
+// //         </label>
 
-//         <button type="submit">Sign up as</button>
-//         <label>
-//           Agree to terms
-//           <input
-//             name="checkbox"
-//             type="checkbox"
-//             checked={agreed}
-//             onChange={this.handleChange}
-//           />
-//         </label>
+// //         <button type="submit">Sign up as</button>
+// //         <label>
+// //           Agree to terms
+// //           <input
+// //             name="checkbox"
+// //             type="checkbox"
+// //             checked={agreed}
+// //             onChange={this.handleChange}
+// //           />
+// //         </label>
 
-//         <button type="submit" disabled={!agreed}>
-//           Sign up as
-//         </button>
-//         <h2>Choose your gender</h2>
-//         <label>
-//           Male
-//           <input
-//             type="radio"
-//             checked={gender === Gender.MALE}
-//             name="gender"
-//             value={Gender.MALE}
-//             onChange={this.handleChange}
-//           />
-//         </label>
-//         <label>
-//           Female
-//           <input
-//             type="radio"
-//             checked={gender === Gender.FEMALE}
-//             name="gender"
-//             value={Gender.FEMALE}
-//             onChange={this.handleChange}
-//           />
-//         </label>
-//         <label htmlFor={this.loginInputId}>
-//           <h2>Choose your age</h2>
-//           <select name="age" value={age} onChange={this.handleChange}>
-//             <option value="" disabled>
-//               ...
-//             </option>
-//             <option value="18-25">18-25</option>
-//             <option value="26-35">26-35</option>
-//             <option value="36+">36+</option>
-//           </select>
-//         </label>
+// //         <button type="submit" disabled={!agreed}>
+// //           Sign up as
+// //         </button>
+// //         <h2>Choose your gender</h2>
+// //         <label>
+// //           Male
+// //           <input
+// //             type="radio"
+// //             checked={gender === Gender.MALE}
+// //             name="gender"
+// //             value={Gender.MALE}
+// //             onChange={this.handleChange}
+// //           />
+// //         </label>
+// //         <label>
+// //           Female
+// //           <input
+// //             type="radio"
+// //             checked={gender === Gender.FEMALE}
+// //             name="gender"
+// //             value={Gender.FEMALE}
+// //             onChange={this.handleChange}
+// //           />
+// //         </label>
+// //         <label htmlFor={this.loginInputId}>
+// //           <h2>Choose your age</h2>
+// //           <select name="age" value={age} onChange={this.handleChange}>
+// //             <option value="" disabled>
+// //               ...
+// //             </option>
+// //             <option value="18-25">18-25</option>
+// //             <option value="26-35">26-35</option>
+// //             <option value="36+">36+</option>
+// //           </select>
+// //         </label>
 
-//         <button type="submit" disabled={!agreed} id={this.loginInputId}>
-//           Sign up as {login}
-//         </button>
-//       </form>
-//     );
-//   }
-// }
+// //         <button type="submit" disabled={!agreed} id={this.loginInputId}>
+// //           Sign up as {login}
+// //         </button>
+// //       </form>
+// //     );
+// //   }
+// // }
