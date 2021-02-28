@@ -1,8 +1,7 @@
 import { Component } from 'react';
 import Form from './Form/Form';
-import Contact from './Contacts/Contacts';
 import Filter from './Filter/Filter';
-import shortid from 'shortid';
+import ContactList from './ContactList/ContactList';
 
 class App extends Component {
   state = {
@@ -16,36 +15,52 @@ class App extends Component {
     filter: ' ',
   };
 
-  addContact = ({ name, number }) => {
-    const contact = {
-      id: shortid.generate(),
-      name,
-      number,
-    };
-
+  handleAddContact = ({ contacts }) => {
     this.setState(prev => ({
-      contacts: [...prev.contacts, contact],
+      contacts: [...prev.contacts, contacts],
     }));
   };
-  onRemove = e => {
-    // this.setState(id);
-    console.log(e.prev.state);
+
+  handldeUnickName = name => {
+    const { contacts } = this.state;
+    const isExistContact = !!contacts.find(contacts => contacts.name === name);
+    isExistContact && alert('Contact is already exist');
+    return !isExistContact;
   };
-  changeFilter = evt => {
-    this.setState({ filter: evt.currentTarget.value });
+  handleChangeFilter = filter => {
+    this.setState({ filter });
   };
-  render() {
+  getVisibleContacts = () => {
     const { contacts, filter } = this.state;
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase()),
+    );
+  };
+
+  handleRemoveContact = id =>
+    this.setState(({ contacts }) => ({
+      contacts: contacts.filter(contact => contact.id !== id),
+    }));
+
+  render() {
+    const { filter } = this.state;
+    const visibleContacts = this.getVisibleContacts();
+
     return (
       <>
-        <Form onSubmit={this.addContact}></Form>
-        <div>
-          <Contact
-            renderContacts={contacts}
-            onDeleteContact={this.onRemove}
-          ></Contact>
-          <Filter value={filter} onChange={this.changeFilter}></Filter>
-        </div>
+        <h1>Phonebook</h1>
+        <Form
+          onAdd={this.handleAddContact}
+          onCheckUnick={this.handldeUnickName}
+        />
+
+        <Filter filter={filter} onChange={this.handleChangeFilter} />
+
+        <h2> Contacts</h2>
+        <ContactList
+          contacts={visibleContacts}
+          onRemove={this.handleRemoveContact}
+        />
       </>
     );
   }

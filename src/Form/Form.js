@@ -1,26 +1,33 @@
 import { Component } from 'react';
-import shortid from 'shortid';
+import { v4 as uuid } from 'uuid';
 
 class Form extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+  state = { name: '', number: '' };
 
-  nameInputId = shortid.generate();
-  numberInputId = shortid.generate();
-
-  onChange = e => {
+  handleChange = e => {
     const { name, value } = e.currentTarget;
     this.setState({ [name]: value });
   };
 
-  onSubmit = e => {
+  handleSubmit = e => {
     e.preventDefault();
-    console.log(this.state);
-    this.props.onSubmit(this.state);
+    const { name, number } = this.state;
+    const { onAdd } = this.props;
+
+    const isValidateForm = this.validateForm();
+    if (!isValidateForm) return;
+
+    onAdd({ id: uuid(), name, number });
     this.reset();
   };
+
+  validateForm = () => {
+    const { name } = this.state;
+    const { onCheckUnick } = this.props;
+
+    return onCheckUnick(name);
+  };
+
   reset = () => {
     this.setState({ name: '', number: '' });
   };
@@ -28,40 +35,27 @@ class Form extends Component {
   render() {
     const { name, number } = this.state;
     return (
-      <form onSubmit={this.onSubmit}>
-        <div>Phonebook</div>
+      <form onSubmit={this.handleSubmit}>
         <div>
-          <label htmlFor={this.nameInputId}>
-            Name
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter name"
-              value={name}
-              onChange={this.onChange}
-              id={this.nameInputId}
-            />
-          </label>
-          <label htmlFor={this.numberInputId}>
-            Number
-            <input
-              type="tel"
-              name="number"
-              placeholder="Enter phone"
-              onChange={this.onChange}
-              value={number}
-              id={this.numberInputId}
-            />
-          </label>
-          <button type="submit" disabled={name === '' && number === ''}>
+          Name
+          <input
+            type="text"
+            name="name"
+            placeholder="Enter name"
+            value={name}
+            onChange={this.handleChange}
+          />
+          Number
+          <input
+            type="tel"
+            name="number"
+            placeholder="Enter phone number"
+            value={number}
+            onChange={this.handleChange}
+          />
+          <button type="submit" disabled={name === '' || number === ''}>
             Add contact
           </button>
-
-          {/* <div>
-            <label htmlFor="">
-              <input type="text" name="filter" value={this.state.filter} />
-            </label>
-          </div> */}
         </div>
       </form>
     );
