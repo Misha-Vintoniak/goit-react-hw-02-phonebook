@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { v4 as uuid } from 'uuid';
-
+import './Form.module.css';
 class Form extends Component {
   state = { name: '', number: '' };
 
@@ -37,7 +37,7 @@ class Form extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div>
-          Name
+          <p>Name</p>
           <input
             type="text"
             name="name"
@@ -45,7 +45,7 @@ class Form extends Component {
             value={name}
             onChange={this.handleChange}
           />
-          Number
+          <p>Number</p>
           <input
             type="tel"
             name="number"

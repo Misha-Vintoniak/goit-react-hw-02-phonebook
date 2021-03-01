@@ -2,6 +2,7 @@ import { Component } from 'react';
 import Form from './Form/Form';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
+import s from './index.module.css';
 
 class App extends Component {
   state = {
@@ -52,20 +53,22 @@ class App extends Component {
 
     return (
       <>
-        <h1>Phonebook</h1>
-        <Form
-          onAdd={this.handleAddContact}
-          onCheckUnick={this.handldeUnickName}
-        />
+        <div className={s.container}>
+          <h1>Phonebook</h1>
+          <Form
+            onAdd={this.handleAddContact}
+            onCheckUnick={this.handldeUnickName}
+          />
 
-        <h2>Find contacts</h2>
-        <Filter filter={filter} onChange={this.handleChangeFilter} />
-
-        <h2> Contacts</h2>
-        <ContactList
-          contacts={visibleContacts}
-          onRemove={this.handleRemoveContact}
-        />
+          <h2>Find contacts</h2>
+          <Filter filter={filter} onChange={this.handleChangeFilter} />
+        </div>
+        <div className={s.container}>
+          <ContactList
+            contacts={visibleContacts}
+            onRemove={this.handleRemoveContact}
+          />
+        </div>
       </>
     );
   }
